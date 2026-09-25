@@ -1,15 +1,14 @@
 
-const http = require('http');
+var http = require('http');
+var fs = require('fs'); //　①
 
-const hostname = '127.0.0.1';
-const port = 3000;
-
-const server = http.createServer((req, res) => {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/plain');
-    res.end('Hello Github!');
+var server = http.createServer(function(req, res) {
+    fs.readFile('./temp.html', 'utf-8', function(err, data) { //　②
+        res.writeHead(200, {'Content-Type': 'text/html'}); // ③
+        res.write(data);
+        res.end();
+    })
 });
 
-server.listen(port, hostname, () => {
-    console.log("Server running at http://${hostname}:${port}/");
-});
+server.listen(3000);
+console.log('サーバーを起動しました。');
